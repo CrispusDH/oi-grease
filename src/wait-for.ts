@@ -17,6 +17,7 @@ export const waitFor = async (
 const evaluatePredicate = async (
   predicate: Predicate,
   start: number,
+  // tslint:disable-next-line:no-shadowed-variable
   { timeout, pollTime, message }: WaitOptions,
 ) => {
   const elapsed = now() - start;
@@ -46,6 +47,7 @@ const evaluatePredicate = async (
   });
 };
 
+// tslint:disable-next-line:no-shadowed-variable
 const tick = async (pollTime, fn, ...args): Promise<void> => {
   await pause(pollTime);
   await fn(...args);

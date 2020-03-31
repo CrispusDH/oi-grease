@@ -1,5 +1,5 @@
 import { ClickOptions, ElementHandle, Page } from 'puppeteer';
-import {waitFor} from './wait-for';
+import { waitFor } from './wait-for';
 import { isElementFound, isElementVisible } from './predicates';
 import { clickDelay, typeDelay } from './constants';
 
