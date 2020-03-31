@@ -1,0 +1,12 @@
+node_modules
+dist
+target
+coverage
+typings
+maven
+.history
+.idea
+*.iml
+package-lock.json
+.yo-rc.json
+.vscode

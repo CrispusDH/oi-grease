@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "sourceMap": true,
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "dist/declarations",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
+  }
+}

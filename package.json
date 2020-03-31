@@ -1,0 +1,42 @@
+{
+  "name": "oi-grease",
+  "version": "1.0.0",
+  "description": "Bunch of help methods for e2e automation testing via Puppeteer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrispusDH/puppeteer-helpers"
+  },
+  "author": "Oleksii Ihnatiuk <qacrispus@gmail.com> (https://github.com/CrispusDH)",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/declarations/index.d.ts",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "tslint": "6.1.0",
+    "tslint-eslint-rules": "5.4.0",
+    "typescript": "3.8.3",
+    "puppeteer": "2.1.1",
+    "pkg-conf": "3.1.0"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run clean && npm run lint && tsc",
+    "clean": "rm -rf dist",
+    "lint": "tslint 'src/**/*.ts' 'test/**/*.ts'",
+    "tsc": "tsc",
+    "pretest": "npm run clean && tsc",
+    "posttest": "npm run clean"
+  },
+  "bugs": {
+    "url": "https://github.com/CrispusDH/puppeteer-helpers/issues"
+  },
+  "homepage": "https://github.com/CrispusDH/puppeteer-helpers#readme",
+  "keywords": [
+    "puppeteer",
+    "wait",
+    "click",
+    "type",
+    "predicate"
+  ]
+}
