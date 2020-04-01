@@ -46,7 +46,7 @@ export const type = async (
   } else {
     element = selectorOrElement;
   }
-  if (options.clear) {
+  if (mergedOptions.clear) {
     await clear(page, selectorOrElement);
   }
   await element.type(text, { delay: mergedOptions.delay });
