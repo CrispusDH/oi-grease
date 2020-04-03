@@ -1,6 +1,6 @@
 import { ClickOptions, ElementHandle, Page } from 'puppeteer';
 import { waitFor } from './wait-for';
-import { isElementFound, isElementVisible } from './predicates';
+import { isElementFound, isElementVisible, isUrlChangedAfterFn } from './predicates';
 import { clickDelay, typeDelay } from './constants';
 
 export const getElement = async (
@@ -19,10 +19,13 @@ export const getElement = async (
 export const click = async (
   page: Page,
   selectorOrElement: string | ElementHandle,
-  options?: Partial<ClickOptions>
+  options?: Partial<ExtendedClickOptions>
 ): Promise<void> => {
-  const defaultOptions: ClickOptions = { delay: clickDelay };
+  const defaultOptions: ExtendedClickOptions = { delay: clickDelay, shouldURLbeChanged: false };
   const mergedOptions = { ...defaultOptions, ...options };
+  if (mergedOptions.shouldURLbeChanged) {
+    await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
+  }
   let element: ElementHandle;
   if (typeof selectorOrElement === 'string') {
     element = await getElement(page, selectorOrElement);
@@ -30,6 +33,20 @@ export const click = async (
     element = selectorOrElement;
   }
   await element.click(mergedOptions);
+};
+
+const clickWithWaitingChangedURL = async (
+  page: Page,
+  selectorOrElement: string | ElementHandle,
+  mergedOptions: ExtendedClickOptions
+): Promise<void> => {
+  const recursionOptions: ExtendedClickOptions = { ...mergedOptions, shouldURLbeChanged: false };
+  await waitFor(
+    () => isUrlChangedAfterFn(
+      this.page,
+      () => click(page, selectorOrElement, recursionOptions)
+    )
+  )
 };
 
 export const type = async (
@@ -69,4 +86,8 @@ const clear = async (page: Page, selectorOrElement: string | ElementHandle): Pro
 interface TypeOptions {
   delay: number,
   clear: boolean
+}
+
+interface ExtendedClickOptions extends ClickOptions {
+  shouldURLbeChanged: boolean
 }

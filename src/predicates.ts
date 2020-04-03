@@ -1,4 +1,5 @@
 import { ElementHandle, Page } from 'puppeteer';
+import { pause } from './small';
 
 export const isElementFound = async (
   page: Page,
@@ -26,4 +27,15 @@ export const hasVisibleBoundingBox = async (
 ): Promise<boolean> => {
   const rect = await element.boundingBox();
   return rect !== null;
+};
+
+export const isUrlChangedAfterFn = async (
+  page: Page,
+  fn: () => Promise<void>,
+) => {
+  const url = await page.url();
+  await fn();
+  await pause(500);
+  const newUrl = await page.url();
+  return url !== newUrl;
 };
