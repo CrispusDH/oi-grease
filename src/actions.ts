@@ -43,7 +43,7 @@ const clickWithWaitingChangedURL = async (
   const recursionOptions: ExtendedClickOptions = { ...mergedOptions, shouldURLbeChanged: false };
   await waitFor(
     () => isUrlChangedAfterFn(
-      this.page,
+      page,
       () => click(page, selectorOrElement, recursionOptions)
     )
   )
