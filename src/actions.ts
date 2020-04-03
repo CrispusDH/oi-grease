@@ -25,14 +25,15 @@ export const click = async (
   const mergedOptions = { ...defaultOptions, ...options };
   if (mergedOptions.shouldURLbeChanged) {
     await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
-  }
-  let element: ElementHandle;
-  if (typeof selectorOrElement === 'string') {
-    element = await getElement(page, selectorOrElement);
   } else {
-    element = selectorOrElement;
+    let element: ElementHandle;
+    if (typeof selectorOrElement === 'string') {
+      element = await getElement(page, selectorOrElement);
+    } else {
+      element = selectorOrElement;
+    }
+    await element.click(mergedOptions);
   }
-  await element.click(mergedOptions);
 };
 
 const clickWithWaitingChangedURL = async (
