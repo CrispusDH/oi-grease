@@ -80,6 +80,20 @@ export const getText = async (page: Page, selectorOrElement: string | ElementHan
   return page.evaluate((node: Element) => node.textContent, element)
 };
 
+export const getAttribute = async (
+  attribute: string,
+  page: Page,
+  selectorOrElement: string | ElementHandle,
+): Promise<string | null> => {
+  let element: ElementHandle;
+  if (typeof selectorOrElement === 'string') {
+    element = await getElement(page, selectorOrElement);
+  } else {
+    element = selectorOrElement;
+  }
+  return page.evaluate((node: Element, text: string) => node.getAttribute(text), element, attribute);
+};
+
 const clear = async (page: Page, selectorOrElement: string | ElementHandle): Promise<void> => {
   await click(page, selectorOrElement,  { clickCount: 3, delay: 20 });
 };
