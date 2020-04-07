@@ -52,8 +52,9 @@ export const isUrlChangedAfterFn = async (
 };
 
 export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>) => {
+  const isInteractable = await isElementInteractable(page, selector);
   await fn();
-  return await isElementInteractable(page, selector);
+  return isInteractable;
 };
 
 export const isElementInteractable = async (

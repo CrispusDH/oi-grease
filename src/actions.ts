@@ -33,8 +33,6 @@ export const click = async (
   const mergedOptions = { ...defaultOptions, ...options };
   if (mergedOptions.shouldURLbeChanged) {
     await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
-  } else if (!!mergedOptions.waitForElement) {
-    await clickWithWaitingAnotherElement(page, selectorOrElement, mergedOptions);
   } else {
     let element: ElementHandle;
     if (typeof selectorOrElement === 'string') {
@@ -43,6 +41,9 @@ export const click = async (
       element = selectorOrElement;
     }
     await element.click(mergedOptions);
+    if (!!mergedOptions.waitForElement) {
+      await clickWithWaitingAnotherElement(page, selectorOrElement, mergedOptions);
+    }
   }
 };
 
