@@ -1,6 +1,9 @@
 import { ClickOptions, ElementHandle, Page } from 'puppeteer';
 import { waitFor } from './wait-for';
-import { isElementFound, isElementVisible, isUrlChangedAfterFn } from './predicates';
+import {
+  isElementFound, isElementInteractableAfterFn,
+  isElementVisible, isUrlChangedAfterFn,
+} from './predicates';
 import { clickDelay, typeDelay } from './constants';
 
 export const getElement = async (
@@ -21,10 +24,12 @@ export const click = async (
   selectorOrElement: string | ElementHandle,
   options?: Partial<ExtendedClickOptions>
 ): Promise<void> => {
-  const defaultOptions: ExtendedClickOptions = { delay: clickDelay, shouldURLbeChanged: false };
+  const defaultOptions: ExtendedClickOptions = { delay: clickDelay, shouldURLbeChanged: false, waitForElement: '' };
   const mergedOptions = { ...defaultOptions, ...options };
   if (mergedOptions.shouldURLbeChanged) {
     await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
+  } else if (!!mergedOptions.waitForElement) {
+    await clickWithWaitingAnotherElement(page, selectorOrElement, mergedOptions);
   } else {
     let element: ElementHandle;
     if (typeof selectorOrElement === 'string') {
@@ -34,6 +39,21 @@ export const click = async (
     }
     await element.click(mergedOptions);
   }
+};
+
+const clickWithWaitingAnotherElement = async (
+  page: Page,
+  selectorOrElement: string | ElementHandle,
+  mergedOptions: ExtendedClickOptions
+) => {
+  const recursionOptions: ExtendedClickOptions = { ...mergedOptions, waitForElement: '' };
+  await waitFor(
+    () => isElementInteractableAfterFn(
+      page,
+      mergedOptions.waitForElement,
+      () => click(page, selectorOrElement, recursionOptions)
+    )
+  )
 };
 
 const clickWithWaitingChangedURL = async (
@@ -104,5 +124,6 @@ interface TypeOptions {
 }
 
 interface ExtendedClickOptions extends ClickOptions {
-  shouldURLbeChanged: boolean
+  shouldURLbeChanged: boolean,
+  waitForElement: string
 }
