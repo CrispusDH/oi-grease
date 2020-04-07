@@ -1,5 +1,6 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { pause } from './small';
+import { waitFor } from './wait-for';
 
 export const isElementFound = async (
   page: Page,
@@ -52,7 +53,6 @@ export const isUrlChangedAfterFn = async (
 
 export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>) => {
   await fn();
-  await pause(300);
   return await isElementInteractable(page, selector);
 };
 
@@ -61,14 +61,18 @@ export const isElementInteractable = async (
   selector: string,
 ): Promise<boolean> => {
   try {
-    const found = await isElementFound(page, selector);
-    if (!found) {
-      return false;
-    }
-    const visible = await isElementVisible(page, selector);
-    if (!visible) {
-      return false;
-    }
+    await waitFor(
+      () => isElementFound(page, selector),
+      {
+        timeout: 3000
+      }
+    );
+    await waitFor(
+      () => isElementVisible(page, selector),
+      {
+        timeout: 3000
+      }
+    );
   } catch (error) {
     return false;
   }

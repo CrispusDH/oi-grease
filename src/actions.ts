@@ -24,7 +24,12 @@ export const click = async (
   selectorOrElement: string | ElementHandle,
   options?: Partial<ExtendedClickOptions>
 ): Promise<void> => {
-  const defaultOptions: ExtendedClickOptions = { delay: clickDelay, shouldURLbeChanged: false, waitForElement: '' };
+  const defaultOptions: ExtendedClickOptions = {
+    delay: clickDelay,
+    shouldURLbeChanged: false,
+    waitForElement: '',
+    clickCountUnderPoll: 1
+  };
   const mergedOptions = { ...defaultOptions, ...options };
   if (mergedOptions.shouldURLbeChanged) {
     await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
@@ -46,7 +51,11 @@ const clickWithWaitingAnotherElement = async (
   selectorOrElement: string | ElementHandle,
   mergedOptions: ExtendedClickOptions
 ) => {
-  const recursionOptions: ExtendedClickOptions = { ...mergedOptions, waitForElement: '' };
+  const recursionOptions: ExtendedClickOptions = {
+    ...mergedOptions,
+    clickCount: mergedOptions.clickCountUnderPoll,
+    waitForElement: ''
+  };
   await waitFor(
     () => isElementInteractableAfterFn(
       page,
@@ -125,5 +134,6 @@ interface TypeOptions {
 
 interface ExtendedClickOptions extends ClickOptions {
   shouldURLbeChanged: boolean,
-  waitForElement: string
+  waitForElement: string,
+  clickCountUnderPoll: number
 }
