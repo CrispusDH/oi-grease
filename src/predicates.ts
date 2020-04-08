@@ -1,6 +1,7 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { pause } from './small';
 import { waitFor } from './wait-for';
+import pFilter = require('p-filter');
 
 export const isElementFound = async (
   page: Page,
@@ -52,14 +53,11 @@ export const isUrlChangedAfterFn = async (
 };
 
 export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>) => {
-  const isInteractable = await isElementInteractable(page, selector);
-  if (!isInteractable) {
-    await fn();
-  }
-  return isInteractable;
+  await fn();
+  return await isElementInteractable(page, selector);
 };
 
-export const isElementInteractable = async (
+const isElementInteractable = async (
   page: Page,
   selector: string,
 ): Promise<boolean> => {
@@ -80,4 +78,14 @@ export const isElementInteractable = async (
     return false;
   }
   return true
+};
+
+export const isReturnValueFromFindNotEmptyArray = async <T>(
+  input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
+  filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
+  options?: pFilter.Options,
+): Promise<boolean> => {
+  const array = await input();
+  const result = await pFilter(array, filterer, options);
+  return result[0] !== undefined;
 };

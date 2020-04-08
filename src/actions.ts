@@ -28,11 +28,12 @@ export const click = async (
     delay: clickDelay,
     shouldURLbeChanged: false,
     waitForElement: '',
-    clickCountUnderPoll: 1
   };
   const mergedOptions = { ...defaultOptions, ...options };
   if (mergedOptions.shouldURLbeChanged) {
     await clickWithWaitingChangedURL(page, selectorOrElement, mergedOptions);
+  } else if (!!mergedOptions.waitForElement) {
+    await clickWithWaitingAnotherElement(page, selectorOrElement, mergedOptions);
   } else {
     let element: ElementHandle;
     if (typeof selectorOrElement === 'string') {
@@ -41,9 +42,6 @@ export const click = async (
       element = selectorOrElement;
     }
     await element.click(mergedOptions);
-    if (!!mergedOptions.waitForElement) {
-      await clickWithWaitingAnotherElement(page, selectorOrElement, mergedOptions);
-    }
   }
 };
 
@@ -54,7 +52,6 @@ const clickWithWaitingAnotherElement = async (
 ) => {
   const recursionOptions: ExtendedClickOptions = {
     ...mergedOptions,
-    clickCount: mergedOptions.clickCountUnderPoll,
     waitForElement: ''
   };
   await waitFor(
@@ -136,5 +133,4 @@ interface TypeOptions {
 interface ExtendedClickOptions extends ClickOptions {
   shouldURLbeChanged: boolean,
   waitForElement: string,
-  clickCountUnderPoll: number
 }
