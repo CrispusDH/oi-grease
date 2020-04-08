@@ -1,6 +1,6 @@
 {
   "name": "oi-grease",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Bunch of help methods for e2e automation testing via Puppeteer",
   "repository": {
     "type": "git",
@@ -14,15 +14,15 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "pkg-conf": "3.1.0"
+    "pkg-conf": "3.1.0",
+    "p-filter": "2.1.0"
   },
   "devDependencies": {
     "@types/puppeteer": "2.0.1",
     "puppeteer": "2.1.1",
     "tslint": "6.1.0",
     "tslint-eslint-rules": "5.4.0",
-    "typescript": "3.8.3",
-    "p-filter": "2.1.0"
+    "typescript": "3.8.3"
   },
   "scripts": {
     "prepublishOnly": "npm run clean && npm run lint && tsc",
