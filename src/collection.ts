@@ -1,4 +1,4 @@
-import pFilter = require('p-filter');
+import * as pFilter from 'p-filter';
 import { isReturnValueFromFindNotEmptyArray } from './predicates';
 import { waitFor } from './wait-for';
 

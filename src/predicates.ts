@@ -1,7 +1,7 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { pause } from './small';
 import { waitFor } from './wait-for';
-import pFilter = require('p-filter');
+import * as pFilter from 'p-filter';
 
 export const isElementFound = async (
   page: Page,
