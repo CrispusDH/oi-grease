@@ -80,7 +80,11 @@ const isElementInteractable = async (
   return true
 };
 
-export const isReturnValueFromFindNotEmptyArray = async <T>(
+export const isReturnValueFromFindNotEmptyArray: <T>(
+  input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
+  filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
+  options?: pFilter.Options,
+) => Promise<boolean> = async <T>(
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
   options?: pFilter.Options,
