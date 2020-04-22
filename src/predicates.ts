@@ -93,7 +93,8 @@ export const isElementDisabled = async (
   return page.$eval(
     selector,
     node => {
-      return node.hasAttribute('disabled');
+      const hasAttribute = node.hasAttribute('disabled');
+      return !hasAttribute;
     });
 };
 
