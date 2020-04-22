@@ -52,32 +52,49 @@ export const isUrlChangedAfterFn = async (
   return url !== newUrl;
 };
 
-export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>) => {
+export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>): Promise<boolean> => {
   await fn();
-  return await isElementInteractable(page, selector);
+  try {
+    await waitFor(
+      () => isElementInteractable(page, selector),
+      {
+        timeout: 3000,
+      }
+    );
+    return true;
+  } catch {
+    return false;
+  }
 };
 
-const isElementInteractable = async (
+export const isElementInteractable = async (
   page: Page,
   selector: string,
 ): Promise<boolean> => {
-  try {
-    await waitFor(
-      () => isElementFound(page, selector),
-      {
-        timeout: 3000
-      }
-    );
-    await waitFor(
-      () => isElementVisible(page, selector),
-      {
-        timeout: 3000
-      }
-    );
-  } catch (error) {
+  const isFound = await isElementFound(page, selector);
+  if (!isFound) {
     return false;
   }
-  return true
+  const isVisible = await isElementVisible(page, selector);
+  if (!isVisible) {
+    return false;
+  }
+  const isDisabled = await isElementDisabled(page, selector);
+  if (!isDisabled) {
+    return false;
+  }
+  return true;
+};
+
+export const isElementDisabled = async (
+  page: Page,
+  selector: string,
+): Promise<boolean> => {
+  return page.$eval(
+    selector,
+    node => {
+      return node.hasAttribute('disabled');
+    });
 };
 
 export const isReturnValueFromFindNotEmptyArray: <T>(
