@@ -1,6 +1,6 @@
 import { Page } from 'puppeteer';
 import { waitFor } from './wait-for';
-import { isElementDisabled, isElementFound, isElementVisible } from './predicates';
+import { isElementNotDisabled, isElementFound, isElementVisible } from './predicates';
 
 export const checkElementIsInteractable = async (
   page: Page,
@@ -12,7 +12,7 @@ export const checkElementIsInteractable = async (
   await waitFor(() => isElementVisible(page, selector), {
     message: `Element with selector: "${selector}" was not visible, but found`,
   });
-  await waitFor(() => isElementDisabled(page, selector), {
+  await waitFor(() => isElementNotDisabled(page, selector), {
     message: `Element with selector: "${selector}" was disabled, but found and visible`,
   });
 };

@@ -79,14 +79,14 @@ export const isElementInteractable = async (
   if (!isVisible) {
     return false;
   }
-  const isDisabled = await isElementDisabled(page, selector);
+  const isDisabled = await isElementNotDisabled(page, selector);
   if (!isDisabled) {
     return false;
   }
   return true;
 };
 
-export const isElementDisabled = async (
+export const isElementNotDisabled = async (
   page: Page,
   selector: string,
 ): Promise<boolean> => {
