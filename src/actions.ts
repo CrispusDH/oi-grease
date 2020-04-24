@@ -1,7 +1,7 @@
 import { ClickOptions, ElementHandle, Page } from 'puppeteer';
 import { waitFor } from './wait-for';
 import {
-  isElementDisabled,
+  isElementNotDisabled,
   isElementFound,
   isElementInteractableAfterFn, isElementVisible,
   isUrlChangedAfterFn,
@@ -18,7 +18,7 @@ export const getElement = async (
   await waitFor(() => isElementVisible(page, selector), {
     message: `Element with selector: "${selector}" was not visible, but found`,
   });
-  await waitFor(() => isElementDisabled(page, selector), {
+  await waitFor(() => isElementNotDisabled(page, selector), {
     message: `Element with selector: "${selector}" was disabled, but found and visible`,
   });
   return page.$(selector);
