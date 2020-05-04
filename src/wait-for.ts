@@ -58,7 +58,7 @@ const pause = async (ms: bigint): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, Number(ms)));
 };
 
-type Predicate = () => boolean | Promise<boolean>;
+export type Predicate = () => boolean | Promise<boolean>;
 
 export interface WaitOptions {
   timeout: number;

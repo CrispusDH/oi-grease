@@ -1,6 +1,6 @@
 import { ElementHandle, Page } from 'puppeteer';
 import { pause } from './small';
-import { waitFor } from './wait-for';
+import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';
 
 export const isElementFound = async (
@@ -57,6 +57,21 @@ export const isElementInteractableAfterFn = async (page: Page, selector: string,
   try {
     await waitFor(
       () => isElementInteractable(page, selector),
+      {
+        timeout: 3000,
+      }
+    );
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const isPredicateResolveAfterFn = async (predicate: Predicate, fn: () => Promise<void>): Promise<boolean> => {
+  await fn();
+  try {
+    await waitFor(
+      predicate,
       {
         timeout: 3000,
       }
