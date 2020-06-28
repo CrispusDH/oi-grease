@@ -30,7 +30,7 @@ Set of `actions` that typically use during UI automation. Each of it wait that e
 - `selector` <string> that represent CSS Selector
 - returns: `Promise<ElementHandle>` Puppeteer's Element instance
 
-The method [waitFor] Element will be [found](#iselementfound), [visible](#iselementvisible) and [not disabled](iselementnotdisabled) and only after it returns this Element.
+The method [waitFor](#waitfor) Element will be [found](#iselementfound), [visible](#iselementvisible) and [not disabled](iselementnotdisabled) and only after it returns this Element.
 If some of these conditions will not pass it throw an error with `selector` of this Element and condition which Element did not pass.
 
 #### click
@@ -41,6 +41,7 @@ If some of these conditions will not pass it throw an error with `selector` of t
   * `waitForElement` <string> wait for element (that will be found by CSS Selector from this argument), if element did not found/visible/disabled then click again
   * `waitForPredicate` <() => boolean | Promise<boolean>> wait for predicate is getting `true` in 3 sec, if not then click again
 - returns: `Promise<void>`
+
 
 Wrap common Puppeteer click to be closer to conditions when User can click Element. You should wait before clicking that an Element is found && visible && not disabled
 
@@ -53,12 +54,14 @@ Wrap common Puppeteer click to be closer to conditions when User can click Eleme
   * `clear` <boolean> clear input field before typing (using fast 3 times clicking approach, maybe approach will be changed TBD)
 - returns: `Promise<void>`
 
+
 Wrap common Puppeteer type to be closer to conditions when User can type. You should wait before typing that an Element is found && visible && not disabled.
 
 #### getText
 - `page` Puppeteer's <Page> instance
 - `selectorOrElement` <string> that represent CSS Selector | <ElementHandle> in this case click will be without waiting
 - returns: `string` text in element
+
 
 Get text using `node.textContent` property. Wait before an Element is found && visible && not disabled.
 
@@ -67,6 +70,7 @@ Get text using `node.textContent` property. Wait before an Element is found && v
 - `page` Puppeteer's <Page> instance
 - `selectorOrElement` <string> that represent CSS Selector | <ElementHandle> in this case click will be without waiting
 - returns: `string` value of this attribute
+
 
 Get attribute using `node.getAttribute(attribute)`. Wait before an Element is found && visible && not disabled.
 
@@ -79,12 +83,14 @@ Set of predicates that can be used when you want to check a condition of Element
 - `selector` <string> that represent CSS Selector
 - returns: `Promise<boolean>`
 
+
 check is element was found in DOM by Puppeteer
 
 #### isElementVisible
 - `page` Puppeteer's <Page> instance
 - `selector` <string> that represent CSS Selector
 - returns: `Promise<boolean>`
+
 
 check is element visible by several conditions:
 - CSS Style `visibilty` property is not `hidden`
@@ -96,6 +102,7 @@ for sure amount of conditions can be increased endlessly
 - `page` Puppeteer's <Page> instance
 - `selector` <string> that represent CSS Selector
 - returns: `Promise<boolean>`
+
 
 check that element does not have attribute `disabled`
 
@@ -115,12 +122,13 @@ just `setTimeout` trick
   * `message` <stirng> message that you can add in case of predicate was not getting `true`
   * `pollTime` <number> amount of milliseconds between attempts. Defaults to 200 ms.
 
+
 Method that is fundamental for UI automation. Check predicate and if false then check it again after some time (200ms by default). So, we can ensure that some conditions are ready.
 Will `throw` an error in case of predicate was not getting `true`.
 Improve stacktrace - TBD.
 
-### collection
 
+### collection
 it's raw implementation of working with array of Elements
 
 #### filterWithWaiting
@@ -129,6 +137,7 @@ it's raw implementation of working with array of Elements
 - `filterOptions` <Object>
   * `timeout` <number> under the hood here using [waitFor](#waitfor), and timeout pass there. Defaults to 30 sec.
 - returns: `T[]` array with filtered items, throw error if nothing was matched
+
 
 Try to filter Iterable object, wait if filter did not find anything.
 
@@ -150,6 +159,7 @@ Example:
 - `filterOptions` <Object>
   * `timeout` <number> under the hood here using [waitFor](#waitfor), and timeout pass there. Defaults to 30 sec.
 - returns: `T` first filtered item, throw error if nothing was matched
+
 
 Try to filter Iterable object, wait if filter did not find anything.
 
