@@ -7,6 +7,7 @@ import {
   isUrlChangedAfterFn, isPredicateResolveAfterFn,
 } from './predicates';
 import { clickDelay, typeDelay } from './constants';
+import { pause } from './small';
 
 export const getElement = async (
   page: Page,
@@ -115,7 +116,7 @@ export const type = async (
     element = selectorOrElement;
   }
   if (mergedOptions.clear) {
-    await clear(page, selectorOrElement);
+    await clear(page, element);
   }
   await element.type(text, { delay: mergedOptions.delay });
 };
@@ -145,7 +146,12 @@ export const getAttribute = async (
 };
 
 const clear = async (page: Page, selectorOrElement: string | ElementHandle): Promise<void> => {
-  await click(page, selectorOrElement,  { clickCount: 3, delay: 20 });
+  await click(page, selectorOrElement);
+  await this.page.evaluate(() =>
+    document.execCommand('selectall', false, null),
+  );
+  await pause(200); // without it selection can be terminate in the middle
+  await this.page.keyboard.press('Backspace');
 };
 
 interface TypeOptions {

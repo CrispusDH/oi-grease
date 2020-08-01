@@ -27,7 +27,7 @@ export const isElementVisible = async (
       element,
     );
     const hasVisible = await hasVisibleBoundingBox(element);
-    return style?.visibility !== 'hidden' && hasVisible;
+    return style?.visibility !== 'hidden' && style?.display !== 'none' && style?.opacity !== '0' && hasVisible;
   } catch (error) {
     error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
     throw error;
