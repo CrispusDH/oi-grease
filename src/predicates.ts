@@ -113,6 +113,17 @@ export const isElementNotDisabled = async (
     });
 };
 
+export const isElementDisabled = async (
+  page: Page,
+  selector: string,
+): Promise<boolean> => {
+  return page.$eval(
+    selector,
+    node => {
+      return node.hasAttribute('disabled');
+    });
+};
+
 export const isReturnValueFromFindNotEmptyArray: <T>(
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
