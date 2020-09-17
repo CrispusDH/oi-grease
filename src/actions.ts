@@ -147,11 +147,11 @@ export const getAttribute = async (
 
 const clear = async (page: Page, selectorOrElement: string | ElementHandle): Promise<void> => {
   await click(page, selectorOrElement);
-  await this.page.evaluate(() =>
+  await page.evaluate(() =>
     document.execCommand('selectall', false, null),
   );
   await pause(200); // without it selection can be terminate in the middle
-  await this.page.keyboard.press('Backspace');
+  await page.keyboard.press('Backspace');
 };
 
 interface TypeOptions {
