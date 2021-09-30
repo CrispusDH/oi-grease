@@ -18,8 +18,7 @@
     "p-filter": "2.1.0"
   },
   "devDependencies": {
-    "@types/puppeteer": "2.0.1",
-    "puppeteer": "2.1.1",
+    "@types/puppeteer-core": "^5.4.0",
     "tslint": "6.1.0",
     "tslint-eslint-rules": "5.4.0",
     "typescript": "3.8.3"

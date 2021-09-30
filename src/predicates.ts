@@ -1,4 +1,4 @@
-import { ElementHandle, Page } from 'puppeteer';
+import { Page, ElementHandle } from 'puppeteer-core';
 import { pause } from './small';
 import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';

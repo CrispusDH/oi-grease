@@ -1,4 +1,4 @@
-import { Page } from 'puppeteer';
+import { Page } from 'puppeteer-core';
 import { waitFor } from './wait-for';
 import { isElementNotDisabled, isElementFound, isElementVisible } from './predicates';
 

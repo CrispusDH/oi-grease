@@ -1,4 +1,4 @@
-import { ClickOptions, ElementHandle, Page } from 'puppeteer';
+import { Page, ElementHandle, ClickOptions } from 'puppeteer-core';
 import { Predicate, waitFor } from './wait-for';
 import {
   isElementNotDisabled,
