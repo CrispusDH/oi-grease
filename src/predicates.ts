@@ -23,7 +23,7 @@ export const isElementVisible = async (
   try {
     const element = await page.$(selector);
     const style = await page.evaluate(
-      node => window.getComputedStyle((node as unknown) as Element),
+      (node) => window.getComputedStyle((node as unknown) as Element),
       element,
     );
     const hasVisible = await hasVisibleBoundingBox(element);
@@ -52,7 +52,11 @@ export const isUrlChangedAfterFn = async (
   return url !== newUrl;
 };
 
-export const isElementInteractableAfterFn = async (page: Page, selector: string, fn: () => Promise<void>): Promise<boolean> => {
+export const isElementInteractableAfterFn = async (
+  page: Page,
+  selector: string,
+  fn: () => Promise<void>
+): Promise<boolean> => {
   await fn();
   try {
     await waitFor(
@@ -107,7 +111,7 @@ export const isElementNotDisabled = async (
 ): Promise<boolean> => {
   return page.$eval(
     selector,
-    node => {
+    (node) => {
       const hasAttribute = node.hasAttribute('disabled');
       return !hasAttribute;
     });
@@ -119,7 +123,7 @@ export const isElementDisabled = async (
 ): Promise<boolean> => {
   return page.$eval(
     selector,
-    node => {
+    (node) => {
       return node.hasAttribute('disabled');
     });
 };
@@ -128,7 +132,7 @@ export const isReturnValueFromFindNotEmptyArray: <T>(
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
   options?: pFilter.Options,
-) => Promise<boolean> = async <T>(
+) => Promise<boolean> = async <T> (
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
   options?: pFilter.Options,

@@ -55,7 +55,7 @@ const tick = async (pollTime, fn, ...args): Promise<void> => {
 
 const now = (): number => Date.now();
 const pause = async (ms: bigint): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, Number(ms)));
+  return new Promise((resolve) => setTimeout(resolve, Number(ms)));
 };
 
 export type Predicate = () => boolean | Promise<boolean>;

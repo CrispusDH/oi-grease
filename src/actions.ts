@@ -69,7 +69,7 @@ const clickWithWaitingAnotherElement = async (
       mergedOptions.waitForElement,
       () => click(page, selectorOrElement, recursionOptions)
     )
-  )
+  );
 };
 
 const clickWithWaitingChangedURL = async (
@@ -83,7 +83,7 @@ const clickWithWaitingChangedURL = async (
       page,
       () => click(page, selectorOrElement, recursionOptions)
     )
-  )
+  );
 };
 
 const clickWithWaitingPredicate = async (
@@ -98,7 +98,7 @@ const clickWithWaitingPredicate = async (
       predicate,
       () => click(page, selectorOrElement, recursionOptions)
     )
-  )
+  );
 };
 
 export const type = async (
@@ -128,7 +128,7 @@ export const getText = async (page: Page, selectorOrElement: string | ElementHan
   } else {
     element = selectorOrElement;
   }
-  return page.evaluate((node: Element) => node.textContent, element)
+  return page.evaluate((node: Element) => node.textContent, element);
 };
 
 export const getAttribute = async (
@@ -155,12 +155,12 @@ const clear = async (page: Page, selectorOrElement: string | ElementHandle): Pro
 };
 
 interface TypeOptions {
-  delay: number,
-  clear: boolean
+  delay: number;
+  clear: boolean;
 }
 
 interface ExtendedClickOptions extends ClickOptions {
-  shouldURLbeChanged: boolean,
-  waitForElement: string,
+  shouldURLbeChanged: boolean;
+  waitForElement: string;
   waitForPredicate: Predicate;
 }

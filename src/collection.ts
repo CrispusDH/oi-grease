@@ -3,7 +3,7 @@ import { isReturnValueFromFindNotEmptyArray } from './predicates';
 import { waitFor } from './wait-for';
 import { timeout } from './constants';
 
-export const filterWithWaiting = async <T>(
+export const filterWithWaiting = async <T> (
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
   filterOptions: FilterOptions = { timeout },
@@ -19,7 +19,7 @@ export const filterWithWaiting = async <T>(
   return pFilter(array, filterer, filterOptions);
 };
 
-export const findWithWaiting = async <T>(
+export const findWithWaiting = async <T> (
   input: () => PromiseLike<Iterable<T | PromiseLike<T>>>,
   filterer: (element: T, index: number) => boolean | PromiseLike<boolean>,
   filterOptions: FilterOptions = { timeout },
@@ -36,6 +36,6 @@ export const findWithWaiting = async <T>(
   return result[0];
 };
 
-interface FilterOptions  extends pFilter.Options{
-  timeout: number
+interface FilterOptions  extends pFilter.Options {
+  timeout: number;
 }
