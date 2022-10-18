@@ -34,6 +34,23 @@ export const isElementVisible = async (
   }
 };
 
+export const isElementRendered = async (
+  page: Page,
+  selector: string,
+  timeout?: number,
+): Promise<boolean> => {
+  try {
+    await waitFor(() => isElementVisible(page, selector), {
+      pollTime: 500,
+      timeout: timeout || 10000,
+    });
+    return true;
+  } catch (error) {
+    error.message = `Element with ${selector} is not visible after ${timeout || 10000}ms timeout. Because of: ${error.message}`;
+    throw error;
+  }
+};
+
 export const hasVisibleBoundingBox = async (
   element: ElementHandle,
 ): Promise<boolean> => {

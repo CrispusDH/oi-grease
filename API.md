@@ -12,6 +12,7 @@
   * [isElementFound](#iselementfound)
   * [isElementVisible](#iselementvisible)
   * [isElementNotDisabled](#iselementnotdisplayed)
+  * [isElementRendered](#iselementrendered)
 - [small](#small)
   * [pause](#pause)
 - [waitFor](#waitfor)
@@ -105,6 +106,14 @@ for sure amount of conditions can be increased endlessly
 
 
 check that element does not have attribute `disabled`
+
+#### isElementRendered
+- `page` Puppeteer's <Page> instance
+- `selector` <string> that represent CSS Selector
+- `timeout?` Optional. Default timeout is 10000ms
+- returns: `Promise<boolean>`
+
+check is element visible after timeout
 
 ### small
 
