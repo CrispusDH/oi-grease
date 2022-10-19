@@ -3,6 +3,24 @@ import { pause } from './small';
 import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';
 
+const checkVisibility = async (
+  page: Page,
+  selector: string,
+): Promise<boolean> => {
+  const element = await page.$(selector);
+  const style = await page.evaluate(
+    (node) => window.getComputedStyle((node as unknown) as Element),
+    element,
+  );
+  const hasVisible = await hasVisibleBoundingBox(element);
+  return (
+    style?.visibility !== 'hidden' &&
+    style?.display !== 'none' &&
+    style?.opacity !== '0' &&
+    hasVisible
+  );
+};
+
 export const isElementFound = async (
   page: Page,
   selector: string,
@@ -19,34 +37,20 @@ export const isElementFound = async (
 export const isElementVisible = async (
   page: Page,
   selector: string,
-): Promise<boolean> => {
-  try {
-    const element = await page.$(selector);
-    const style = await page.evaluate(
-      (node) => window.getComputedStyle((node as unknown) as Element),
-      element,
-    );
-    const hasVisible = await hasVisibleBoundingBox(element);
-    return style?.visibility !== 'hidden' && style?.display !== 'none' && style?.opacity !== '0' && hasVisible;
-  } catch (error) {
-    error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
-    throw error;
-  }
-};
-
-export const isElementRendered = async (
-  page: Page,
-  selector: string,
   timeout?: number,
 ): Promise<boolean> => {
   try {
-    await waitFor(() => isElementVisible(page, selector), {
-      pollTime: 500,
-      timeout: timeout || 10000,
-    });
-    return true;
+    if (timeout) {
+      await waitFor(() => checkVisibility(page, selector), {
+        pollTime: 500,
+        timeout,
+      });
+      return true;
+    } else {
+      return await checkVisibility(page, selector);
+    }
   } catch (error) {
-    error.message = `Element with ${selector} is not visible after ${timeout || 10000}ms timeout. Because of: ${error.message}`;
+    error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
     throw error;
   }
 };
