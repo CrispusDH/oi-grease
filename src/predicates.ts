@@ -3,24 +3,6 @@ import { pause } from './small';
 import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';
 
-const checkVisibility = async (
-  page: Page,
-  selector: string,
-): Promise<boolean> => {
-  const element = await page.$(selector);
-  const style = await page.evaluate(
-    (node) => window.getComputedStyle((node as unknown) as Element),
-    element,
-  );
-  const hasVisible = await hasVisibleBoundingBox(element);
-  return (
-    style?.visibility !== 'hidden' &&
-    style?.display !== 'none' &&
-    style?.opacity !== '0' &&
-    hasVisible
-  );
-};
-
 export const isElementFound = async (
   page: Page,
   selector: string,
@@ -39,18 +21,38 @@ export const isElementVisible = async (
   selector: string,
   timeout?: number,
 ): Promise<boolean> => {
+  const isVisible = async (
+    page: Page,
+    selector: string,
+  ): Promise<boolean> => {
+    const element = await page.$(selector);
+    const style = await page.evaluate(
+      (node) => window.getComputedStyle((node as unknown) as Element),
+      element,
+    );
+    const hasVisible = await hasVisibleBoundingBox(element);
+    return (
+      style?.visibility !== 'hidden' &&
+      style?.display !== 'none' &&
+      style?.opacity !== '0' &&
+      hasVisible
+    );
+  };
   try {
     if (timeout) {
-      await waitFor(() => checkVisibility(page, selector), {
+      await waitFor(() => isVisible(page, selector), {
         pollTime: 500,
         timeout,
       });
       return true;
     } else {
-      return await checkVisibility(page, selector);
+      return isVisible(page, selector);
     }
   } catch (error) {
-    error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
+    timeout
+      ? (error.message = `Element with ${selector} is not visible after ${
+        timeout}ms timeout. Because of: ${error.message}`)
+      : (error.message = `Element with ${selector} is not visible. Because of: ${error.message}`);
     throw error;
   }
 };
