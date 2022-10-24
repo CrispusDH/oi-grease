@@ -19,17 +19,40 @@ export const isElementFound = async (
 export const isElementVisible = async (
   page: Page,
   selector: string,
+  timeout?: number,
 ): Promise<boolean> => {
-  try {
+  const isVisible = async (
+    page: Page,
+    selector: string,
+  ): Promise<boolean> => {
     const element = await page.$(selector);
     const style = await page.evaluate(
       (node) => window.getComputedStyle((node as unknown) as Element),
       element,
     );
     const hasVisible = await hasVisibleBoundingBox(element);
-    return style?.visibility !== 'hidden' && style?.display !== 'none' && style?.opacity !== '0' && hasVisible;
+    return (
+      style?.visibility !== 'hidden' &&
+      style?.display !== 'none' &&
+      style?.opacity !== '0' &&
+      hasVisible
+    );
+  };
+  try {
+    if (timeout) {
+      await waitFor(() => isVisible(page, selector), {
+        pollTime: 500,
+        timeout,
+      });
+      return true;
+    } else {
+      return isVisible(page, selector);
+    }
   } catch (error) {
-    error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
+    timeout
+      ? (error.message = `Element with ${selector} is not visible after ${
+        timeout}ms timeout. Because of: ${error.message}`)
+      : (error.message = `Element with ${selector} is not visible. Because of: ${error.message}`);
     throw error;
   }
 };
