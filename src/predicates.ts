@@ -1,4 +1,4 @@
-import { Page, ElementHandle } from 'puppeteer-core';
+import { ElementHandle, Page } from 'puppeteer-core';
 import { pause } from './small';
 import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';
@@ -21,10 +21,7 @@ export const isElementVisible = async (
   selector: string,
   timeout?: number,
 ): Promise<boolean> => {
-  const isVisible = async (
-    page: Page,
-    selector: string,
-  ): Promise<boolean> => {
+  const isVisible = async (): Promise<boolean> => {
     const element = await page.$(selector);
     const style = await page.evaluate(
       (node) => window.getComputedStyle((node as unknown) as Element),
@@ -40,13 +37,13 @@ export const isElementVisible = async (
   };
   try {
     if (timeout) {
-      await waitFor(() => isVisible(page, selector), {
+      await waitFor(() => isVisible(), {
         pollTime: 500,
         timeout,
       });
       return true;
     } else {
-      return isVisible(page, selector);
+      return isVisible();
     }
   } catch (error) {
     timeout
