@@ -1,6 +1,6 @@
 {
   "name": "oi-grease",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Bunch of help methods for e2e automation testing via Puppeteer",
   "repository": {
     "type": "git",
