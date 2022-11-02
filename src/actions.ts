@@ -101,7 +101,7 @@ const clickWithWaitingPredicate = async (
   );
 };
 
-export const type = async (
+export const typeText = async (
   text: string,
   page: Page,
   selectorOrElement: string | ElementHandle,

@@ -5,7 +5,7 @@
 - [actions](#actions)
   * [getElement](#getelement)
   * [click](#click)
-  * [type](#type)
+  * [typeText](#typetext)
   * [getText](#gettext)
   * [getAttribute](#getattribute)
 - [predicates](#predicates)
@@ -45,7 +45,7 @@ If some of these conditions will not pass it throw an error with `selector` of t
 
 Wrap common Puppeteer click to be closer to conditions when User can click Element. You should wait before clicking that an Element is found && visible && not disabled
 
-#### type
+#### typeText
 - `text`: string,
 - `page` Puppeteer's <Page> instance
 - `selectorOrElement` <string> that represent CSS Selector | <ElementHandle> in this case click will be without waiting
