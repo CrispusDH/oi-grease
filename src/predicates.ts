@@ -1,4 +1,4 @@
-import { Page, ElementHandle } from 'puppeteer-core';
+import { ElementHandle, Page } from 'puppeteer-core';
 import { pause } from './small';
 import { Predicate, waitFor } from './wait-for';
 import * as pFilter from 'p-filter';
@@ -19,17 +19,37 @@ export const isElementFound = async (
 export const isElementVisible = async (
   page: Page,
   selector: string,
+  timeout?: number,
 ): Promise<boolean> => {
-  try {
+  const isVisible = async (): Promise<boolean> => {
     const element = await page.$(selector);
     const style = await page.evaluate(
       (node) => window.getComputedStyle((node as unknown) as Element),
       element,
     );
     const hasVisible = await hasVisibleBoundingBox(element);
-    return style?.visibility !== 'hidden' && style?.display !== 'none' && style?.opacity !== '0' && hasVisible;
+    return (
+      style?.visibility !== 'hidden' &&
+      style?.display !== 'none' &&
+      style?.opacity !== '0' &&
+      hasVisible
+    );
+  };
+  try {
+    if (timeout) {
+      await waitFor(() => isVisible(), {
+        pollTime: 500,
+        timeout,
+      });
+      return true;
+    } else {
+      return isVisible();
+    }
   } catch (error) {
-    error.message = `Element with ${selector} is not visible. Because of: ${error.message}`;
+    timeout
+      ? (error.message = `Element with ${selector} is not visible after ${
+        timeout}ms timeout. Because of: ${error.message}`)
+      : (error.message = `Element with ${selector} is not visible. Because of: ${error.message}`);
     throw error;
   }
 };

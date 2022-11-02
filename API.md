@@ -89,6 +89,7 @@ check is element was found in DOM by Puppeteer
 #### isElementVisible
 - `page` Puppeteer's <Page> instance
 - `selector` <string> that represent CSS Selector
+- `timeout?` Optional. Default timeout is 10000ms
 - returns: `Promise<boolean>`
 
 
@@ -97,6 +98,9 @@ check is element visible by several conditions:
 - element has bounding box (relative to the main frame), so we expect element is visible
 
 for sure amount of conditions can be increased endlessly
+
+optionally we could specify 'timeout' to wait for the element
+
 
 #### isElementNotDisabled
 - `page` Puppeteer's <Page> instance
